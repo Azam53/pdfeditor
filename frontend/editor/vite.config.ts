@@ -18,7 +18,7 @@ function compressStaticCopyPlugin(): PluginOption {
   return {
     name: "compress-static-copy",
     apply: "build" as const,
-    async closeBundle() {
+    async writeBundle() {
       const distDir = path.resolve(__dirname, "dist");
       const targets = ["pdfium", "vendor", "pdfjs"];
 
@@ -92,7 +92,7 @@ function prerenderOgPlugin(): PluginOption {
   return {
     name: "prerender-og",
     apply: "build" as const,
-    async closeBundle() {
+    async writeBundle() {
       const { prerenderOg } = await import("./scripts/og-prerender.mjs");
       const ogBase = (
         process.env.VITE_OG_BASE_URL ||
