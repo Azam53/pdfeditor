@@ -22,7 +22,7 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 ext {
     springBootVersion = "4.0.6"
     pdfboxVersion = "3.0.7"
-    imageioVersion = "3.13.1"
+    imageioVersion = "3.14.0"
     lombokVersion = "1.18.46"
     bouncycastleVersion = "1.84"
     springSecuritySamlVersion = "7.0.5"
