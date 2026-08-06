@@ -24,6 +24,11 @@ public class CleanUrlInterceptor implements HandlerInterceptor {
                     "date",
                     "errorOAuth",
                     "file",
+                    "fileUrl",
+                    "saveUrl",
+                    "fileName",
+                    "fileId",
+                    "readOnly",
                     "messageType",
                     "infoMessage",
                     "page",
@@ -53,7 +58,7 @@ public class CleanUrlInterceptor implements HandlerInterceptor {
             // Keep only the allowed parameters
             String[] queryParameters = queryString.split("&");
             for (String param : queryParameters) {
-                String[] keyValuePair = param.split("=");
+                String[] keyValuePair = param.split("=", 2);
                 if (keyValuePair.length != 2) {
                     continue;
                 }
