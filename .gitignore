@@ -17,7 +17,7 @@ local.properties
 version.properties
 
 #### Stirling-PDF Files ###
-pipeline/
+/pipeline/
 !pipeline/.gitkeep
 customFiles/
 configs/
