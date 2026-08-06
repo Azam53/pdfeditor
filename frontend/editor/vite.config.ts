@@ -18,7 +18,7 @@ function compressStaticCopyPlugin(): PluginOption {
   return {
     name: "compress-static-copy",
     apply: "build" as const,
-    async writeBundle() {
+    async closeBundle() {
       const distDir = path.resolve(__dirname, "dist");
       const targets = ["pdfium", "vendor", "pdfjs"];
 
