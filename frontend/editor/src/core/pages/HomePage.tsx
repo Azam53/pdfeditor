@@ -91,6 +91,9 @@ export default function HomePage() {
   const isProgrammaticScroll = useRef(false);
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const location = useLocation();
+  const isExternalPdfSession = new URLSearchParams(window.location.search).has(
+    "fileUrl",
+  );
   // Persisted user preference for the FileSidebar collapsed state. Auto-
   // collapse on /files is layered on top in the transition effect below and
   // doesn't write to storage, so deep-linking to /files won't overwrite what
@@ -403,72 +406,74 @@ export default function HomePage() {
                 </div>
               </div>
             )}
-            <div className="mobile-bottom-bar">
-              <button
-                className="mobile-bottom-button"
-                aria-label={t("quickAccess.allTools", "Tools")}
-                onClick={() => {
-                  handleBackToTools();
-                  if (isMobile) {
-                    setActiveMobileView("tools");
-                  }
-                }}
-              >
-                <AppsIcon sx={{ fontSize: "1.5rem" }} />
-                <span className="mobile-bottom-button-label">
-                  {t("quickAccess.allTools", "Tools")}
-                </span>
-              </button>
-              {toolAvailability["automate"]?.available !== false && (
+            {!isExternalPdfSession && (
+              <div className="mobile-bottom-bar">
                 <button
                   className="mobile-bottom-button"
-                  aria-label={t("quickAccess.automate", "Automate")}
+                  aria-label={t("quickAccess.allTools", "Tools")}
                   onClick={() => {
-                    handleToolSelect("automate");
+                    handleBackToTools();
                     if (isMobile) {
                       setActiveMobileView("tools");
                     }
                   }}
                 >
+                  <AppsIcon sx={{ fontSize: "1.5rem" }} />
+                  <span className="mobile-bottom-button-label">
+                    {t("quickAccess.allTools", "Tools")}
+                  </span>
+                </button>
+                {toolAvailability["automate"]?.available !== false && (
+                  <button
+                    className="mobile-bottom-button"
+                    aria-label={t("quickAccess.automate", "Automate")}
+                    onClick={() => {
+                      handleToolSelect("automate");
+                      if (isMobile) {
+                        setActiveMobileView("tools");
+                      }
+                    }}
+                  >
+                    <LocalIcon
+                      icon="automation-outline"
+                      width="1.5rem"
+                      height="1.5rem"
+                    />
+                    <span className="mobile-bottom-button-label">
+                      {t("quickAccess.automate", "Automate")}
+                    </span>
+                  </button>
+                )}
+                <button
+                  className="mobile-bottom-button"
+                  aria-label={t("home.mobile.openFiles", "Open files")}
+                  onClick={() => navigate("/files")}
+                >
                   <LocalIcon
-                    icon="automation-outline"
+                    icon="folder-rounded"
                     width="1.5rem"
                     height="1.5rem"
                   />
                   <span className="mobile-bottom-button-label">
-                    {t("quickAccess.automate", "Automate")}
+                    {t("quickAccess.files", "Files")}
                   </span>
                 </button>
-              )}
-              <button
-                className="mobile-bottom-button"
-                aria-label={t("home.mobile.openFiles", "Open files")}
-                onClick={() => navigate("/files")}
-              >
-                <LocalIcon
-                  icon="folder-rounded"
-                  width="1.5rem"
-                  height="1.5rem"
-                />
-                <span className="mobile-bottom-button-label">
-                  {t("quickAccess.files", "Files")}
-                </span>
-              </button>
-              <button
-                className="mobile-bottom-button"
-                aria-label={t("quickAccess.config", "Config")}
-                onClick={() => setConfigModalOpen(true)}
-              >
-                <LocalIcon
-                  icon="settings-rounded"
-                  width="1.5rem"
-                  height="1.5rem"
-                />
-                <span className="mobile-bottom-button-label">
-                  {t("quickAccess.config", "Config")}
-                </span>
-              </button>
-            </div>
+                <button
+                  className="mobile-bottom-button"
+                  aria-label={t("quickAccess.config", "Config")}
+                  onClick={() => setConfigModalOpen(true)}
+                >
+                  <LocalIcon
+                    icon="settings-rounded"
+                    width="1.5rem"
+                    height="1.5rem"
+                  />
+                  <span className="mobile-bottom-button-label">
+                    {t("quickAccess.config", "Config")}
+                  </span>
+                </button>
+              </div>
+            )}
             <FileManager selectedTool={selectedTool} />
             <AppConfigModal
               opened={configModalOpen}

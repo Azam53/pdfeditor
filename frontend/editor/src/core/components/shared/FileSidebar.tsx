@@ -112,6 +112,9 @@ const FileSidebar = forwardRef<HTMLDivElement, FileSidebarProps>(
     const [searchQuery, setSearchQuery] = useState("");
     const searchInputRef = useRef<HTMLInputElement>(null);
     const nativeFileInputRef = useRef<HTMLInputElement>(null);
+    const isExternalPdfSession = new URLSearchParams(
+      window.location.search,
+    ).has("fileUrl");
     // State (not ref) so setting it triggers a re-render - avoids racing addFiles state updates.
     const [pendingViewFileId, setPendingViewFileId] = useState<string | null>(
       null,
@@ -753,7 +756,7 @@ const FileSidebar = forwardRef<HTMLDivElement, FileSidebarProps>(
                 would just flash a duplicate. Distinct icons (UploadFile for
                 "Open from computer" vs FolderOpen for "My Files") so the
                 collapsed rail isn't two identical folder icons either. */}
-           {/* <Tooltip
+            {/* <Tooltip
               label={t("fileSidebar.openFromComputer", "Open from computer")}
               position="right"
               withinPortal
@@ -961,18 +964,20 @@ const FileSidebar = forwardRef<HTMLDivElement, FileSidebarProps>(
                   <span className="file-sidebar-section-label">
                     {t("fileSidebar.files", "Files")}
                   </span>
-                  <button
-                    className="file-sidebar-section-btn file-sidebar-section-btn-external"
-                    onClick={() => navigate("/files")}
-                    title={t(
-                      "fileSidebar.openFileManager",
-                      "Browse all files & folders",
-                    )}
-                    type="button"
-                    data-testid="open-files-page"
-                  >
-                    <OpenInNewIcon sx={{ fontSize: "1rem" }} />
-                  </button>
+                  {!isExternalPdfSession && (
+                    <button
+                      className="file-sidebar-section-btn file-sidebar-section-btn-external"
+                      onClick={() => navigate("/files")}
+                      title={t(
+                        "fileSidebar.openFileManager",
+                        "Browse all files & folders",
+                      )}
+                      type="button"
+                      data-testid="open-files-page"
+                    >
+                      <OpenInNewIcon sx={{ fontSize: "1rem" }} />
+                    </button>
+                  )}
                 </div>
 
                 {!stubsLoaded ? (
@@ -1119,7 +1124,7 @@ const FileSidebar = forwardRef<HTMLDivElement, FileSidebarProps>(
         />
 
         {/* Bottom bar: user name + settings */}
-      {/*  <Tooltip
+        {/*  <Tooltip
           label={
             onOpenSettings
               ? `${displayName} - ${t("fileSidebar.openSettings", "Open settings")}`
